@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Message">     											   				   <!-- 名空间 -->
+	<resultMap type="com.demo.bean.Message" id="MessageResult">                                <!-- 多个查询，注意此处指resultMap --> 
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="command" jdbcType="VARCHAR" property="command" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+	</resultMap>
+	
+	<select id="queryMessageList" parameterType="com.demo.bean.Message" resultMap="MessageResult"> <!-- 动态SQL,单个参数 -->
+		SELECT id,command,description,content FROM message WHERE 1=1
+		<if test="command!=null &amp;&amp; !&quot;&quot;.equals(command.trim())">  <!-- 相当于command!=null && !"".equals(command.trim()) -->
+			AND command=#{command}
+		</if>
+		<if test="description!=null &amp;&amp; !&quot;&quot;.equals(description.trim())">
+			AND description LIKE '%' #{description} '%'
+		</if>
+	</select>
+	
+	<delete id="deleteOne" parameterType="int">
+		DELETE FROM message WHERE id=#{_parameter}
+	</delete>
+	
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM message WHERE id IN
+	</delete>	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
