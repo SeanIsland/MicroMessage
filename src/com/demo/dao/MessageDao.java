@@ -46,7 +46,7 @@ public class MessageDao {
 			sqlSession=dbAccess.getSqlSession();
 			//通过sqlSession执行SQL语句
 			sqlSession.delete("Message.deleteOne",id);
-			sqlSession.commit();
+			sqlSession.commit();  //一定要提交事务
 		}catch(IOException e){
 			e.printStackTrace();
 		}finally{
