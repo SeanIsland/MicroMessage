@@ -54,4 +54,23 @@ public class MessageDao {
 				sqlSession.close();
 		}
 	}
+	
+	/*
+	 * 多条删除
+	 */
+	public void deleteBatch(List<Integer> ids){
+		DBAccess dbAccess=new DBAccess();
+		SqlSession sqlSession=null;
+		try{
+			sqlSession=dbAccess.getSqlSession();
+			//通过sqlSession执行SQL语句
+			sqlSession.delete("Message.deleteBatch",ids);
+			sqlSession.commit();  //一定要提交事务
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			if(sqlSession!=null)
+				sqlSession.close();
+		}
+	}	
 }
