@@ -60,7 +60,7 @@ function render() {
 		hovertimeout	: null, // timeout to hide the scrollbar
 		isScrollbarHover: false,// true if the mouse is over the scrollbar
 		elementtimeout	: null,	// avoids showing the scrollbar when moving from inside the element to outside, passing over the scrollbar
-		isScrolling		: false,// true if scrolling
+		isScrolling		: true,// true if scrolling
 		addHoverFunc	: function() {
 			// run only if the window has a width bigger than deviceWidth
 			if( $(window).width() <= this.extPluginOpts.deviceWidth ) return false;
