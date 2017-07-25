@@ -20,5 +20,7 @@
 
 	<mappers>
 		<mapper resource="com/demo/config/sqlxml/Message.xml"/>
+		<mapper resource="com/demo/config/sqlxml/Command.xml"/>
+		<mapper resource="com/demo/config/sqlxml/CommandContent.xml"/>
 	</mappers>
 </configuration>
