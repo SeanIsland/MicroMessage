@@ -1,23 +1,21 @@
 package com.demo.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Random;
-import com.demo.bean.Message;
-import com.demo.dao.MessageDao;
+
 import com.demo.bean.Command;
 import com.demo.bean.CommandContent;
 import com.demo.dao.CommandDao;
+import com.demo.entity.Page;
 import com.demo.util.Iconst;
 
 /**
  * 查询相关的业务功能
  */
 public class QueryService {
-	public List<Message> queryMessageList(String command,String description) {
-		MessageDao messageDao = new MessageDao();
-		return messageDao.queryMessageList(command, description);
-	}
-	
+
 	/**
 	 * 通过指令查询自动回复的内容
 	 * @param command 指令
@@ -44,5 +42,21 @@ public class QueryService {
 			return contentList.get(i).getContent();
 		}
 		return Iconst.NO_MATCHING_CONTENT;
+	}
+	
+	/**
+	 * 根据查询条件分页查询消息列表
+	 */
+	public List<Command> queryMessageListByPage(String command,String description,Page page){
+		Map<String,Object> parameter=new HashMap<String,Object>();
+		//阻止消息对象
+		Command commandItem=new Command();
+		commandItem.setName(command);
+		commandItem.setDescription(description);
+		parameter.put("commandItem", commandItem);
+		parameter.put("page", page);
+		CommandDao commandDao=new CommandDao();
+		//分页查询并返回结果
+		return commandDao.queryCommandListByPage(parameter);
 	}
 }

@@ -17,3 +17,11 @@ function deleteBatch(basePath){
 		$("#mainForm").submit();				
 	}
 }
+
+/**
+ * 修改当前页码，调用后台重新查询
+ */
+function changeCurrentPage(currentPageTemp){
+	$("#currentPage").val(currentPageTemp);
+	$("#mainForm").submit();
+}

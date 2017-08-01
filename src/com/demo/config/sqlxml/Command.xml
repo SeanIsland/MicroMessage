@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Command">
+<mapper namespace="com.demo.dao.ICommand">
   <resultMap type="com.demo.bean.Command" id="Command">
     <id column="C_ID" jdbcType="INTEGER" property="id"/>  <!-- 注意column一栏使用的是别名 -->
     <result column="NAME" jdbcType="VARCHAR" property="name"/>
@@ -11,10 +11,16 @@
     <collection property="contentList"  resultMap="CommandContent.Content"/>
   </resultMap>
   
+  <resultMap type="com.demo.bean.Command" id="CommandResult">
+    <id column="id" jdbcType="INTEGER" property="id"/> 
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+  </resultMap>
+  
   <select id="queryCommandList" parameterType="com.demo.bean.Command" resultMap="Command">
-    select a.id C_ID,a.name,a.description,b.id,b.content,b.commandid
-    from command a left join commandcontent b
-    on a.id=b.commandid
+    SELECT  a.id C_ID,a.name,a.description,b.id,b.content,b.commandid
+    FROM command a LEFT JOIN commandcontent b
+    ON a.id=b.commandid
     <where>
     	<if test="name != null and !&quot;&quot;.equals(name.trim())">
 	    	and a.name=#{name}
@@ -24,4 +30,30 @@
 	    </if>
     </where>
   </select>
+  
+  <sql id="columns">id,name,description</sql>
+  <select id="queryCommandListByPage" parameterType="java.util.Map" resultMap="CommandResult">  <!-- 分页查询 -->
+    SELECT  <include refid="columns"/> FROM command
+    <where>
+    	<if test="commandItem.name != null and !&quot;&quot;.equals(commandItem.name.trim())">
+	    	AND name=#{commandItem.name}
+	    </if>
+	    <if test="commandItem.description != null and !&quot;&quot;.equals(commandItem.description.trim())">
+	    	AND description LIKE '%' #{commandItem.description} '%'
+	    </if>
+    </where>
+    ORDER BY ID
+  </select>
+  
+  <delete id="deleteOne" parameterType="int">
+	DELETE FROM command WHERE id=#{_parameter}
+  </delete>
+	
+  <delete id="deleteBatch" parameterType="java.util.List">
+    DELETE FROM command WHERE id IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>	  
+  
 </mapper>
